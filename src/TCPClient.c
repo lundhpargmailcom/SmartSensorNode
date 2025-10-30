@@ -1,14 +1,19 @@
 #include "TCPClient.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 
 
-
-int TCPClient_Initiate(TCPClient *_Client)
+int TCPClient_Initiate(TCPClient* _Client)
 {
     _Client->fd = -1;
     return 0;
 }
 
-int TCPClient_Connect(TCPClient *_Client, const char *host, const char *port)
+int TCPClient_Connect(TCPClient* _Client, const char* host, const char* port)
 {
     struct addrinfo hints = {0};
 	struct addrinfo* res = NULL;
@@ -31,7 +36,8 @@ int TCPClient_Connect(TCPClient *_Client, const char *host, const char *port)
     */
 
     int fd = -1;
-    for (struct addrinfo *rp = res; rp; rp = rp->ai_next)
+    struct addrinfo* rp;
+    for (rp = res; rp; rp = rp->ai_next)
 	{
         fd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
 
