@@ -4,9 +4,9 @@
 #include "TCPClient.h"
 #include "HTTP.h"
 
-void PrintResponse(const char* data)
+void PrintResponse(const char* response_data)
 {
-    printf("Server response:\n%s\n", data);
+    printf("<========Server response========>:\n%s\n", response_data);
 }
 
 char* CreateJSONData(const char* device, double temp)
@@ -38,14 +38,28 @@ int main()
     TCPClient client;
     TCPClient_Initiate(&client);
 
-    if(TCPClient_Connect(&client, "httpbin.org", "80") != 0)
+    const char* host = "httpbin.org";
+    const char* port = "80";
+    const char* path = "/";
+
+    printf("Connecting to %s:%s...\n", host, port);
+    if(TCPClient_Connect(&client, host, port) != 0)
     {
         fprintf(stderr, "Failed to connect.\n");
         return 1;
     }
 
     char* body = CreateJSONData("UUID-1234", 6.7);
-    HTTPClient_Post(&client, "httpbin.org", "/", body, PrintResponse);
+    if(!body)
+    {
+        fprintf(stderr, "Failed to create body!\n");
+        TCPClient_Dispose(&client);
+        return -1;
+    }
+
+    printf("Sending POST message:\n%s\n", body);
+
+    HTTPClient_Post(&client, host, port, path, body, PrintResponse);
 
     free(body);
     TCPClient_Dispose(&client);

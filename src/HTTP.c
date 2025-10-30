@@ -4,7 +4,7 @@
 #include "HTTP.h"
 
 
-int HTTPClient_Post(TCPClient* client, const char* host, const char* path, const char* body, DataHandler data)
+int HTTPClient_Post(TCPClient* client, const char* host, const char* port, const char* path, const char* body, DataHandler data)
 {
     char request[1024];
     snprintf(request, sizeof(request), 
@@ -17,17 +17,20 @@ int HTTPClient_Post(TCPClient* client, const char* host, const char* path, const
         
     if(TCPClient_Write(client, (const uint8_t*)request, strlen(request)) < 0)
     {
+        perror("send");
         return -1;
     }
 
-    uint8_t response[1024];
+    uint8_t response[2048];
     int n = TCPClient_Read(client, response, sizeof(response)-1);
     if(n <= 0)
     {
+        perror("recv");
         return -1;
     } 
 
     response[n] = '\0';
+    
     data((const char*)response);
 
     return 0;

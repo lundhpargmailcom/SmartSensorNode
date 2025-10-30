@@ -5,7 +5,7 @@
 
 typedef void (*DataHandler)(const char* response);
 
-int HTTPClient_Post(TCPClient* client, const char* host, const char* path, const char* body, DataHandler data);
+int HTTPClient_Post(TCPClient* client, const char* host, const char* port, const char* path, const char* body, DataHandler data);
 
 
 #endif /* __HTTP_H_ */
