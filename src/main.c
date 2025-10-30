@@ -45,7 +45,7 @@ int main()
     }
 
     char* body = CreateJSONData("UUID-1234", 6.7);
-    HTTPClient_Post(&client, "example.com", "/", body, PrintResponse);
+    HTTPClient_Post(&client, "httpbin.org", "/", body, PrintResponse);
 
     free(body);
     TCPClient_Dispose(&client);

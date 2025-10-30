@@ -62,12 +62,12 @@ int TCPClient_Connect(TCPClient* _Client, const char* host, const char* port)
 
 int TCPClient_Read(TCPClient* _Client, uint8_t* buf, int len)
 {
-    return recv(_Client->fd, buf, len, MSG_DONTWAIT);
+    return recv(_Client->fd, buf, len, 0);
 }
 
 int TCPClient_Write(TCPClient* _Client, const uint8_t* buf, int len)
 {
-    return send(_Client->fd, buf, len, MSG_NOSIGNAL);
+    return send(_Client->fd, buf, len, 0);
 }
 
 void TCPClient_Disconnect(TCPClient* _Client)
