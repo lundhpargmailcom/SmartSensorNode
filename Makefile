@@ -4,7 +4,7 @@ SRC_DIR := src
 
 BUILD_DIR := build
 
-CFLAGS := -std=c90 -Isrc -Wall -Wextra -MMD -MP
+CFLAGS := -std=c90 -Isrc -Iinclude -Wall -Wextra -MMD -MP
 
 LDFLAGS := -flto -Wl,--gc-sections
 
