@@ -21,17 +21,27 @@ int HTTPClient_Post(TCPClient* client, const char* host, const char* port, const
         return -1;
     }
 
-    uint8_t response[2048];
-    int n = TCPClient_Read(client, response, sizeof(response)-1);
-    if(n <= 0)
-    {
-        perror("recv");
-        return -1;
-    } 
+    shutdown(client->fd, SHUT_WR);
 
-    response[n] = '\0';
+    uint8_t response[4096];
+    int total = 0;
+
+    while(1)
+    {
+        int n = TCPClient_Read(client, response, sizeof(response) - 1);
+        if(n <= 0)
+        {
+           break;
+        }
+        response[n] = '\0';
+        data((const char*)response);
+        total += n;
+    }
     
-    data((const char*)response);
+    if(total == 0)
+    {
+        printf("No data received\n");
+    }
 
     return 0;
 }

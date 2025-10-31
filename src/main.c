@@ -38,8 +38,8 @@ int main()
     TCPClient client;
     TCPClient_Initiate(&client);
 
-    const char* host = "httpbin.org";
-    const char* port = "80";
+    const char* host = "tcpbin.com";
+    const char* port = "4242";
     const char* path = "/";
 
     printf("Connecting to %s:%s...\n", host, port);
